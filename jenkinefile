@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_ENV = 'production'
+    }
+
+    triggers {
+        githubPush()  // Automatically trigger on GitHub push
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/RifatSolkar/DO_Practical_04.git', branch: 'main'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                bat 'npm install'
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                bat 'start /B node index.js'
+                echo 'Node.js application started successfully!'
+            }
+        }
+    }
+}
